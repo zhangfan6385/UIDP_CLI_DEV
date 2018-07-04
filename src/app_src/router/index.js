@@ -50,7 +50,21 @@ export const constantRouterMap = [
       }
     ]
   },
-
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: '样例2', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: _import('table/index'),
+        meta: { title: '表格2', icon: 'table' }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
