@@ -21,30 +21,24 @@
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
-
+        
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登 录</el-button>
 
-      <div class="tips">
-        <span>用户名: admin</span>
-        <span>密码: 111111</span>
-      </div>
     </el-form>
+    <el-dialog width="40%" title="请选择用户！" :visible.sync="showDialog" append-to-body>
+      <log-in-user :updateShowDialog = 'updateShowDialog'/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/app_src/utils/validate'
-
+// import { isvalidUsername } from '@/app_src/utils/validate'
+import LogInUser from './logInUser'
+import { Message } from 'element-ui'
 export default {
+  components: { LogInUser },
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('密码不能少于6位'))
@@ -54,16 +48,18 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '1111111'
+        username: 'UIDPAdmin',
+        password: 'UIDPAdmin',
+        userDomain: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       loading: false,
-      showDialog: false
+      showDialog: false,
+      radio: 'user'
     }
   },
   methods: {
@@ -77,20 +73,36 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          /* this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.loading = true
+          this.loginForm.userDomain = this.radio // 后改需求走登陆账号 所以没有 域账号的说法了
+          this.$store.dispatch('LoginByUsername', this.loginForm).then(response => {
+            this.$store.dispatch('setRoleLevel', response.data.roleLevel)
+            if (response.data.roleLevel === 'admin') {
+              this.updateShowDialog('')
+            } else {
+              var userList = this.$store.state.user.userList
+              if (userList.length === 1) {
+                // this.$store.dispatch('setDepartCode', orglist[0].orgId)
+                // this.$store.dispatch('setDepartName', orglist[0].orgName)
+                this.$store.dispatch('setUserId', userList[0].USER_ID)
+                this.updateShowDialog('')
+              } else {
+                this.showDialog = true
+              }
+              this.loading = false
+            }// this.$router.push({ path: '/' })
+          }).catch((err) => {
             this.loading = false
-            this.$router.push({ path: '/' })
-          }).catch(() => {
-            this.loading = false
-          }) */
-          this.loading = false
-          this.$router.push({ path: '/' })
+            Message.error(err)
+          })
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    }, updateShowDialog(val) {
+      this.showDialog = false
+      this.$router.push({ path: '/' })
     }
   }
 }
