@@ -3,7 +3,7 @@
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <div class="logo title">
         <img src="../../../app_src/imgs/logo.png">
-        <span>大港油田软件研发平台</span>
+        <span>大港油田软件开发平台</span>
       </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
