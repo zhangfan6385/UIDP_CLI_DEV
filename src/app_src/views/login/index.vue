@@ -109,7 +109,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-$bg:#2d3a4b;
+$bg: rgb(22, 86, 155);
 $light_gray:#eee;
 
 /* reset element-ui css */
@@ -160,8 +160,8 @@ $light_gray:#eee;
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
+$bg: rgb(22, 86, 155);
+$dark_gray:#dee7e8; // #889aa4;
 $light_gray:#eee;
 
 .login-container {
