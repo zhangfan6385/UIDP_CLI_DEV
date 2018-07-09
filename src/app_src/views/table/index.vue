@@ -17,7 +17,7 @@
       <el-table-column width="100px" align="center" label="用户名">
         <template slot-scope="scope">
           <span>{{scope.row.USER_NAME}}</span>
-        </template>
+        </template> 
       </el-table-column>
    <el-table-column width="270px" align="center" label="备注">
         <template slot-scope="scope">
